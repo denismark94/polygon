@@ -1,0 +1,5 @@
+2024-02-29 00:28:57,624 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-02-29 00:28:57,764 - INFO - Authentication (password) successful!
+2024-02-29 00:29:18,607 - INFO - Выполнена команда: ./send.sh -n alice -f alice@polygon.mil.zs -r bob@polygon.mil.zs -u alice@polygon.mil.zs -p 123qweR% -s id:001 -t ABCDEFGH
+2024-02-29 00:29:18,609 - INFO - Выполнена команда: Отправка определенной команды/скрипта через функцию SEND
+2024-02-29 00:29:18,610 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
