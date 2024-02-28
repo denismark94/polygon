@@ -1,5 +1,5 @@
 import sys
-
+import logging
 import paramiko
 
 # ToDo TimeoutError handler
@@ -9,6 +9,8 @@ class SSHHandler:
         self.client = paramiko.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.exit_code = 0
+        logging.basicConfig(filename='log/log_file.log', level=logging.INFO,
+                            format='%(asctime)s - %(levelname)s - %(message)s')
 
     def connect(self, host, username, password, port=22):
         self.exit_code = 0
@@ -19,11 +21,13 @@ class SSHHandler:
             self.exit_code = 3
 
     def disconnect(self):
+        logging.info(f"Выполнена команда: Выход из сеанса подключения по SSH")
         self.client.close()
 
     def execute(self, command):
         stdin, stdout, stderr = self.client.exec_command(command)
         exit_code = stdout.channel.recv_exit_status()
+        logging.info(f"Выполнена команда: {command}")
         output = stdout.readlines()
         return exit_code, output
 
@@ -39,6 +43,8 @@ class SSHHandler:
                       ' -t ' + flag + \
                       (' -v' if verbose else '')
             self.exit_code, output = self.execute(command)
+            logging.info(f"Выполнена команда: Отправка определенной команды/скрипта через функцию SEND")
+
             if verbose:
                 for i in output:
                     print(i, end='')
@@ -56,19 +62,10 @@ class SSHHandler:
                     print(i, end='')
             if self.exit_code == 0:
                 flag = output[-1].strip()
+        logging.info(f"Выполнена команда: Получение определенныч данных через функцию RECEIVE")
         return self.exit_code, flag
 
 
-# send_command = './send.sh -n Alice -f alice@polygon.mil.zs -r bob@polygon.mil.zs -u alice@polygon.mil.zs -p 123qweR% -s id:001 -t 123456'
-# receive_command = './receive.sh -h'
-
-# client.connect(hostname=host,username=user,password=secret, port=port)
-# stdin, stdout,stderr = client.exec_command(send_command)
-# stdin, stdout,stderr = client.exec_command(receive_command)
-# data = stdout.readlines()
-# client.close()
-# for line in data:
-#     print(line,end='')
 if __name__ == '__main__':
     host = '11.11.11.151'
     sender = 'alice'
