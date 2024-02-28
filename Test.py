@@ -83,45 +83,45 @@ class Ui_MainWindow(object):
         self.label_6.setFont(font)
         self.label_6.setStyleSheet("color: #ffffff")
         self.label_6.setObjectName("label_6")
-        self.lineEdit_4 = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.lineEdit_4.setGeometry(QtCore.QRect(220, 70, 80, 25))
+        self.e_messages_amount = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.e_messages_amount.setGeometry(QtCore.QRect(220, 70, 80, 25))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(11)
-        self.lineEdit_4.setFont(font)
-        self.lineEdit_4.setStyleSheet("border: 2px solid #292d32;\n"
+        self.e_messages_amount.setFont(font)
+        self.e_messages_amount.setStyleSheet("border: 2px solid #292d32;\n"
 "border-radius: 8px;\n"
 "color: #ffffff\n"
 "")
-        self.lineEdit_4.setText("")
-        self.lineEdit_4.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lineEdit_4.setObjectName("lineEdit_4")
-        self.lineEdit_2 = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.lineEdit_2.setGeometry(QtCore.QRect(220, 10, 80, 25))
+        self.e_messages_amount.setText("")
+        self.e_messages_amount.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.e_messages_amount.setObjectName("lineEdit_4")
+        self.e_delay = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.e_delay.setGeometry(QtCore.QRect(220, 10, 80, 25))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(11)
-        self.lineEdit_2.setFont(font)
-        self.lineEdit_2.setStyleSheet("border: 2px solid #292d32;\n"
+        self.e_delay.setFont(font)
+        self.e_delay.setStyleSheet("border: 2px solid #292d32;\n"
 "border-radius: 8px;\n"
 "color: #ffffff\n"
 "")
-        self.lineEdit_2.setText("")
-        self.lineEdit_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lineEdit_2.setObjectName("lineEdit_2")
-        self.lineEdit_3 = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.lineEdit_3.setGeometry(QtCore.QRect(220, 40, 80, 25))
+        self.e_delay.setText("")
+        self.e_delay.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.e_delay.setObjectName("lineEdit_2")
+        self.e_threads_amount = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.e_threads_amount.setGeometry(QtCore.QRect(220, 40, 80, 25))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(11)
-        self.lineEdit_3.setFont(font)
-        self.lineEdit_3.setStyleSheet("border: 2px solid #292d32;\n"
+        self.e_threads_amount.setFont(font)
+        self.e_threads_amount.setStyleSheet("border: 2px solid #292d32;\n"
 "border-radius: 8px;\n"
 "color: #ffffff\n"
 "")
-        self.lineEdit_3.setText("")
-        self.lineEdit_3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
-        self.lineEdit_3.setObjectName("lineEdit_3")
+        self.e_threads_amount.setText("")
+        self.e_threads_amount.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.e_threads_amount.setObjectName("lineEdit_3")
         self.tableWidget_2 = QtWidgets.QTableWidget(parent=self.centralwidget)
         self.tableWidget_2.setGeometry(QtCore.QRect(20, 450, 701, 121))
         self.tableWidget_2.setStyleSheet("QTableWidget{\n"
