@@ -40,7 +40,7 @@ class Cor(QtWidgets.QMainWindow):
         self.ts = Ui_MainWindow()
         self.ts.setupUi(self)
         self.init_UI()
-        
+        self.terminated = False
         self.client = paramiko.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.exit_code = 0
@@ -49,8 +49,8 @@ class Cor(QtWidgets.QMainWindow):
     def init_UI(self):
         self.setWindowTitle("Оператор")
         #self.setWindowIcon('путь к фоточке')
-        self.ts.pushButton.clicked.connect(self.copy_text)
-        self.ts.pushButton_2.clicked.connect(self.clic)
+        self.ts.btn_connect.clicked.connect(self.start_mon)
+        self.ts.btn_stop.clicked.connect(self.stop_mon)
 
     def copy_text(self):
           config = configparser.ConfigParser()  # создаём объекта парсера
@@ -70,13 +70,15 @@ class Cor(QtWidgets.QMainWindow):
           sender = text
           text = self.ts.lineEdit_4.text()              # чтение с Edit
           secret = text
-
-
           if (host != '') or (sender != '') or (secret != ''):
-
             self.create_task()
             self.ts.progressBar.setProperty("value", 0)
             for i in range(int(secret)):
+                if self.terminated:
+                    print("execution aborted")
+                    self.ts.progressBar.setValue(0)
+                    self.terminated = False
+                    return
                 print('--------------------------->', i+1)
                 self.create_task()
                 global arm_rand
@@ -86,9 +88,6 @@ class Cor(QtWidgets.QMainWindow):
                 global passwor_rand
                 print(passwor_rand)
                 print(self.ts.comboBox.currentText())
-
-
-
                 MaxBar = int(secret)
                 self.ts.progressBar.setProperty("maximum", MaxBar)
                 self.ts.progressBar.setProperty("value", i+1)
@@ -205,15 +204,18 @@ class Cor(QtWidgets.QMainWindow):
     #         print(i)
     #         time.sleep(5)
 
-    def clic(self):
+    def start_mon(self):
         # Создаем поток
+        self.terminated = False
         thread = threading.Thread(target=self.copy_text, daemon=True)
         # Запускаем поток
         thread.start()
         # Ожидаем завершения потока
-        thread.join()
-        print("Главный поток завершен")
+        # thread.join()
+        # print("Главный поток завершен")
 
+    def stop_mon(self):
+        self.terminated = True
 
 
 
