@@ -1,0 +1,33 @@
+#СОДЕРЖАНИЕ БАЗЫ ДАННЫХ
+Таблица с флагами: (Tab_falg)
+		id_flag | mes_flag
+
+Таблица с ARM: (Tab_arm)
+		id_arm  | ip_addres | 
+
+Таблица пользователи: (Tab_user) 				пока только по 1 арм
+		id_user | name_user | passwor_user | protocol_user | acсess_id_arm |
+
+id_flag | mes_flag
+1 Пороть Профессиональный Стильный
+2 Наглость Полезть Disrevenge
+3 Гепард Победитель Flour
+4 Лохмы Plasma Taki
+5 Puzan Rafter Steeping
+6 Расцветка Украсть Христарадничать
+7 Водить Гроздь Перерасти
+8 Ресницы Boulevard Conceding
+9 Раскованный Цокотать Melodeclamator
+
+
+ip_addres:
+192.168.10.10
+192.168.10.12
+192.168.10.14
+192.168.10.16
+
+name_user + password_user:
+lynx kali
+fox forest
+
+
