@@ -498,15 +498,15 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.comboBox.setCurrentIndex(0)
+        self.comboBox.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "SMTP"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "FTP"))
-        self.comboBox.setItemText(2, _translate("MainWindow", "HTTP"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "smtp"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "ftp"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "http"))
         self.label_2.setText(_translate("MainWindow", "Протоколы:"))
         self.label_7.setText(_translate("MainWindow", "Кол-во отправленных писем:"))
         self.label_4.setText(_translate("MainWindow", "Интервал отправки писем:"))
@@ -514,9 +514,9 @@ class Ui_MainWindow(object):
         item = self.tableWidget_2.verticalHeaderItem(0)
         item.setText(_translate("MainWindow", "Admin"))
         item = self.tableWidget_2.verticalHeaderItem(1)
-        item.setText(_translate("MainWindow", "Lynx"))
+        item.setText(_translate("MainWindow", "Alice"))
         item = self.tableWidget_2.verticalHeaderItem(2)
-        item.setText(_translate("MainWindow", "Fox"))
+        item.setText(_translate("MainWindow", "Bob"))
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ARM 1"))
         item = self.tableWidget_2.horizontalHeaderItem(1)
@@ -569,11 +569,11 @@ class Ui_MainWindow(object):
         self.checkBox_3.setText(_translate("MainWindow", "ARM 3"))
         self.checkBox_4.setText(_translate("MainWindow", "ARM 3"))
         self.label_13.setText(_translate("MainWindow", "Польз."))
-        self.checkBox_9.setText(_translate("MainWindow", "Alice"))
-        self.checkBox_10.setText(_translate("MainWindow", "Bob"))
+        self.checkBox_9.setText(_translate("MainWindow", "Lynx"))
+        self.checkBox_10.setText(_translate("MainWindow", "Fox"))
         self.checkBox_12.setText(_translate("MainWindow", "Admin"))
         self.progressBar.setFormat(_translate("MainWindow", "%p%"))
-        self.pushButton_2.setText(_translate("MainWindow", "Баззки"))
+        self.pushButton_2.setText(_translate("MainWindow", "Стоп"))
 from pyqtgraph import PlotWidget
 
 
