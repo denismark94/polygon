@@ -282,7 +282,7 @@ class Ui_MainWindow(object):
         item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.tableWidget_2.setItem(2, 6, item)
         self.btn_connect = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.btn_connect.setGeometry(QtCore.QRect(20, 360, 191, 31))
+        self.btn_connect.setGeometry(QtCore.QRect(230, 270, 141, 31))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(12)
@@ -304,7 +304,7 @@ class Ui_MainWindow(object):
 "")
         self.btn_connect.setCheckable(False)
         self.btn_connect.setChecked(False)
-        self.btn_connect.setObjectName("pushButton")
+        self.btn_connect.setObjectName("btn_connect")
         self.label_8 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_8.setGeometry(QtCore.QRect(310, 15, 41, 20))
         font = QtGui.QFont()
@@ -467,7 +467,7 @@ class Ui_MainWindow(object):
         self.progressBar.setTextDirection(QtWidgets.QProgressBar.Direction.TopToBottom)
         self.progressBar.setObjectName("progressBar")
         self.btn_stop = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.btn_stop.setGeometry(QtCore.QRect(220, 360, 141, 31))
+        self.btn_stop.setGeometry(QtCore.QRect(230, 310, 141, 31))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(12)
@@ -487,7 +487,7 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "")
-        self.btn_stop.setObjectName("pushButton_2")
+        self.btn_stop.setObjectName("btn_stop")
         self.GraphWidget = PlotWidget(parent=self.centralwidget)
         self.GraphWidget.setGeometry(QtCore.QRect(380, 10, 631, 391))
         self.GraphWidget.setStyleSheet("border: 2px solid #292d32;\n"
@@ -495,6 +495,16 @@ class Ui_MainWindow(object):
 "color: #ffffff\n"
 "")
         self.GraphWidget.setObjectName("GraphWidget")
+        self.label_satus = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_satus.setGeometry(QtCore.QRect(20, 370, 351, 21))
+        font = QtGui.QFont()
+        font.setFamily("GOST type B")
+        font.setPointSize(12)
+        self.label_satus.setFont(font)
+        self.label_satus.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
+        self.label_satus.setStyleSheet("color: #ffffff")
+        self.label_satus.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_satus.setObjectName("label_satus")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -567,13 +577,14 @@ class Ui_MainWindow(object):
         self.checkBox.setText(_translate("MainWindow", "ARM 1"))
         self.checkBox_2.setText(_translate("MainWindow", "ARM 2"))
         self.checkBox_3.setText(_translate("MainWindow", "ARM 3"))
-        self.checkBox_4.setText(_translate("MainWindow", "ARM 3"))
+        self.checkBox_4.setText(_translate("MainWindow", "ARM 4"))
         self.label_13.setText(_translate("MainWindow", "Польз."))
         self.checkBox_9.setText(_translate("MainWindow", "Lynx"))
         self.checkBox_10.setText(_translate("MainWindow", "Fox"))
         self.checkBox_12.setText(_translate("MainWindow", "Admin"))
         self.progressBar.setFormat(_translate("MainWindow", "%p%"))
         self.btn_stop.setText(_translate("MainWindow", "Стоп"))
+        self.label_satus.setText(_translate("MainWindow", "Ожидание..."))
 from pyqtgraph import PlotWidget
 
 

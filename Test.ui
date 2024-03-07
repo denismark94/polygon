@@ -659,12 +659,12 @@ QTableWidget::chunk{
      </property>
     </item>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="btn_connect">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>360</y>
-      <width>191</width>
+      <x>230</x>
+      <y>270</y>
+      <width>141</width>
       <height>31</height>
      </rect>
     </property>
@@ -1128,11 +1128,11 @@ QProgressBar::chunk{
      <string>%p%</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="btn_stop">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>360</y>
+      <x>230</x>
+      <y>310</y>
       <width>141</width>
       <height>31</height>
      </rect>
@@ -1178,6 +1178,34 @@ QPushButton:pressed{
 border-radius: 8px;
 color: #ffffff
 </string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_satus">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>370</y>
+      <width>351</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>GOST type B</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="layoutDirection">
+     <enum>Qt::RightToLeft</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: #ffffff</string>
+    </property>
+    <property name="text">
+     <string>Ожидание...</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
     </property>
    </widget>
   </widget>
