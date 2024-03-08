@@ -1,9 +1,6 @@
 import paramiko
 import sys
-import logging
-
-logging.basicConfig(filename='log_file.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
+from Logger import logging
 class SSHHandler:
     def __init__(self) -> None:
         super().__init__()
