@@ -281,13 +281,13 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         item.setTextAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.tableWidget_2.setItem(2, 6, item)
-        self.pushButton = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(20, 360, 191, 31))
+        self.btn_connect = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.btn_connect.setGeometry(QtCore.QRect(230, 270, 141, 31))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(12)
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet("QPushButton{\n"
+        self.btn_connect.setFont(font)
+        self.btn_connect.setStyleSheet("QPushButton{\n"
 "    background-color: #ee3300;\n"
 "    border: 1px solid #9e2504;\n"
 "    border-radius: 8px;\n"
@@ -302,9 +302,9 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "")
-        self.pushButton.setCheckable(False)
-        self.pushButton.setChecked(False)
-        self.pushButton.setObjectName("pushButton")
+        self.btn_connect.setCheckable(False)
+        self.btn_connect.setChecked(False)
+        self.btn_connect.setObjectName("btn_connect")
         self.label_8 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_8.setGeometry(QtCore.QRect(310, 15, 41, 20))
         font = QtGui.QFont()
@@ -466,13 +466,13 @@ class Ui_MainWindow(object):
         self.progressBar.setInvertedAppearance(False)
         self.progressBar.setTextDirection(QtWidgets.QProgressBar.Direction.TopToBottom)
         self.progressBar.setObjectName("progressBar")
-        self.pushButton_2 = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(220, 360, 141, 31))
+        self.btn_stop = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.btn_stop.setGeometry(QtCore.QRect(230, 310, 141, 31))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(12)
-        self.pushButton_2.setFont(font)
-        self.pushButton_2.setStyleSheet("QPushButton{\n"
+        self.btn_stop.setFont(font)
+        self.btn_stop.setStyleSheet("QPushButton{\n"
 "    background-color: #2d3237;\n"
 "    border: 1px solid #292d32;\n"
 "    border-radius: 8px;\n"
@@ -487,7 +487,7 @@ class Ui_MainWindow(object):
 "\n"
 "\n"
 "")
-        self.pushButton_2.setObjectName("pushButton_2")
+        self.btn_stop.setObjectName("btn_stop")
         self.GraphWidget = PlotWidget(parent=self.centralwidget)
         self.GraphWidget.setGeometry(QtCore.QRect(380, 10, 631, 391))
         self.GraphWidget.setStyleSheet("border: 2px solid #292d32;\n"
@@ -495,6 +495,16 @@ class Ui_MainWindow(object):
 "color: #ffffff\n"
 "")
         self.GraphWidget.setObjectName("GraphWidget")
+        self.label_satus = QtWidgets.QLabel(parent=self.centralwidget)
+        self.label_satus.setGeometry(QtCore.QRect(20, 370, 351, 21))
+        font = QtGui.QFont()
+        font.setFamily("GOST type B")
+        font.setPointSize(12)
+        self.label_satus.setFont(font)
+        self.label_satus.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
+        self.label_satus.setStyleSheet("color: #ffffff")
+        self.label_satus.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.label_satus.setObjectName("label_satus")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -558,7 +568,7 @@ class Ui_MainWindow(object):
         item = self.tableWidget_2.item(2, 4)
         item.setText(_translate("MainWindow", "+"))
         self.tableWidget_2.setSortingEnabled(__sortingEnabled)
-        self.pushButton.setText(_translate("MainWindow", "Подключиться"))
+        self.btn_connect.setText(_translate("MainWindow", "Подключиться"))
         self.label_8.setText(_translate("MainWindow", "сек."))
         self.label_9.setText(_translate("MainWindow", "шт."))
         self.label_10.setText(_translate("MainWindow", "мин."))
@@ -567,13 +577,14 @@ class Ui_MainWindow(object):
         self.checkBox.setText(_translate("MainWindow", "ARM 1"))
         self.checkBox_2.setText(_translate("MainWindow", "ARM 2"))
         self.checkBox_3.setText(_translate("MainWindow", "ARM 3"))
-        self.checkBox_4.setText(_translate("MainWindow", "ARM 3"))
+        self.checkBox_4.setText(_translate("MainWindow", "ARM 4"))
         self.label_13.setText(_translate("MainWindow", "Польз."))
         self.checkBox_9.setText(_translate("MainWindow", "Lynx"))
         self.checkBox_10.setText(_translate("MainWindow", "Fox"))
         self.checkBox_12.setText(_translate("MainWindow", "Admin"))
         self.progressBar.setFormat(_translate("MainWindow", "%p%"))
-        self.pushButton_2.setText(_translate("MainWindow", "Стоп"))
+        self.btn_stop.setText(_translate("MainWindow", "Стоп"))
+        self.label_satus.setText(_translate("MainWindow", "Ожидание..."))
 from pyqtgraph import PlotWidget
 
 

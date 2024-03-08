@@ -40,7 +40,7 @@ class Cor(QtWidgets.QMainWindow):
         self.ts = Ui_MainWindow()
         self.ts.setupUi(self)
         self.init_UI()
-        
+        self.terminated = False
         self.client = paramiko.SSHClient()
         self.client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         self.exit_code = 0
@@ -48,37 +48,41 @@ class Cor(QtWidgets.QMainWindow):
 
     def init_UI(self):
         self.setWindowTitle("Оператор")
-        #self.setWindowIcon('путь к фоточке')
-        self.ts.pushButton.clicked.connect(self.copy_text)
-        self.ts.pushButton_2.clicked.connect(self.clic)
+        self.setWindowIcon(QtGui.QIcon('Logo.ico'))
+        self.ts.btn_connect.clicked.connect(self.chek_UID)
+        self.ts.btn_stop.clicked.connect(self.stop_mon)
 
     def copy_text(self):
-          config = configparser.ConfigParser()  # создаём объекта парсера
-          config.read("Conf.ini")  # читаем конфиг
-          print(config["Logi"]["ip_add"])
-          print(config["Logi"]["password"])
-          print("___________________________________________________________")
-          # print(config["SetWork"]["KolvoPot"])
-          # print(config["SetWork"]["Post"])
-          # self.ts.lineEdit_2.setText(config["SetWork"]["Inter"])        # запись из ini в Edit
-          # self.ts.lineEdit_3.setText(config["SetWork"]["KolvoPot"])
-          # self.ts.lineEdit_4.setText(config["SetWork"]["Post"])
-
-          text = self.ts.lineEdit_2.text()              # чтение с Edit
-          host = text
-          text = self.ts.lineEdit_3.text()              # чтение с Edit
-          sender = text
-          text = self.ts.lineEdit_4.text()              # чтение с Edit
-          secret = text
+        self.ts.label_satus.setText("Чтение данных")
+        text = self.ts.lineEdit_2.text()              # чтение с Edit
+        host = text
+        text = self.ts.lineEdit_3.text()              # чтение с Edit
+        sender = text
+        text = self.ts.lineEdit_4.text()              # чтение с Edit
+        secret = text
 
 
-          if (host != '') or (sender != '') or (secret != ''):
 
-            self.create_task()
+
+
+
+        if (host != '') or (sender != '') or (secret != ''):
+            # self.create_task()
+            self.ts.label_satus.setText("Система активна")
+            self.ts.label_satus.setStyleSheet("color: #ee3300")
+
             self.ts.progressBar.setProperty("value", 0)
             for i in range(int(secret)):
+
+                if self.terminated:
+                    print("execution aborted")
+                    self.ts.progressBar.setValue(0)
+                    self.terminated = False
+                    return
+
                 print('--------------------------->', i+1)
                 self.create_task()
+
                 global arm_rand
                 print(arm_rand)
                 global user_rand
@@ -87,15 +91,15 @@ class Cor(QtWidgets.QMainWindow):
                 print(passwor_rand)
                 print(self.ts.comboBox.currentText())
 
-
-
                 MaxBar = int(secret)
                 self.ts.progressBar.setProperty("maximum", MaxBar)
                 self.ts.progressBar.setProperty("value", i+1)
+
                 time.sleep(int(host))  # Задержка на заданное число
-          else:
-              print('Заполните пустые поля')
-              # тут должно быть что-то типо получены ли данные или нет, если не получчили то ждём пока будут
+        else:
+            print('Ошибка чтения данных')
+            # тут должно быть что-то типо получены ли данные или нет, если не получчили то ждём пока будут
+
 
     def DB_create(self):
         print("Тут вот базы мутятся")
@@ -137,148 +141,112 @@ class Cor(QtWidgets.QMainWindow):
 
         flagCnB = 0
 
-#  Проверка галочки АРМ
-        if self.ts.checkBox.isChecked() == False and self.ts.checkBox_2.isChecked() == False and self.ts.checkBox_3.isChecked() == False and self.ts.checkBox_4.isChecked() == False :
-            print('Выберире ARM')
-        else:
-            arm = []
-            if self.ts.checkBox.isChecked() == True:
-                arm.append(1)
-            if self.ts.checkBox_2.isChecked() == True:
-                arm.append(2)
-            if self.ts.checkBox_3.isChecked() == True:
-                arm.append(3)
-            if self.ts.checkBox_4.isChecked() == True:
-                arm.append(4)
+        arm = []
+        arm.clear()
+        if self.ts.checkBox.isChecked() == True:
+            arm.append(1)
+        if self.ts.checkBox_2.isChecked() == True:
+            arm.append(2)
+        if self.ts.checkBox_3.isChecked() == True:
+            arm.append(3)
+        if self.ts.checkBox_4.isChecked() == True:
+            arm.append(4)
 
-            random.shuffle(arm)
-            arm_rand_id = str(random.choice(arm))
-            # print(arm_rand_id)
-            flagCnB = flagCnB + 1
+        random.shuffle(arm)
+        arm_rand_id = str(random.choice(arm))
+        # print(arm_rand_id)
+
 
 
 #  Проверка галочки пользователя
-        if self.ts.checkBox_9.isChecked() == False and self.ts.checkBox_10.isChecked() == False and self.ts.checkBox_11.isChecked() == False and self.ts.checkBox_12.isChecked() == False:
-            print('Выберире Пользователя')
+        use = []
+        use.clear()
+        if self.ts.checkBox_9.isChecked() == True:
+            use.append(1)
+        if self.ts.checkBox_10.isChecked() == True:
+            use.append(2)
+        if self.ts.checkBox_11.isChecked() == True:
+            use.append(3)
+        if self.ts.checkBox_12.isChecked() == True:
+            use.append(4)
+
+        random.shuffle(use)
+        user_rand_id = str(random.choice(use))
+        # print(user_rand_id)
+
+#  Создали запрос
+
+        serh = "SELECT name_user FROM Tab_user WHERE id_user = " + user_rand_id
+        cursor.execute(serh)
+        user_rand = cursor.fetchone()
+        for user_rand in user_rand:
+            user_rand = user_rand
+
+        serh = "SELECT passwor_user FROM Tab_user WHERE id_user = " + user_rand_id
+        cursor.execute(serh)
+        passwor_rand = cursor.fetchone()
+        for passwor_rand in passwor_rand:
+            passwor_rand = passwor_rand
+
+        serh = "SELECT ip_addres FROM Tab_arm WHERE id_arm = " + arm_rand_id
+        cursor.execute(serh)
+        arm_rand = cursor.fetchone()
+        for arm_rand in arm_rand:
+            arm_rand = arm_rand
+
+    def chek_UID(self):
+        self.ts.label_satus.setText("Проверка параметров работы")
+        flagUID_1 = False
+        flagUID_2 = False
+        flagUID_3 = False
+
+        #  Проверка галочки АРМ
+        if self.ts.checkBox.isChecked() == True or self.ts.checkBox_2.isChecked() == True or self.ts.checkBox_3.isChecked() == True or self.ts.checkBox_4.isChecked() == True:
+            flagUID_1 = True
         else:
-            use = []
-            if self.ts.checkBox_9.isChecked() == True:
-                use.append(1)
-            if self.ts.checkBox_10.isChecked() == True:
-                use.append(2)
-            if self.ts.checkBox_11.isChecked() == True:
-                use.append(3)
-            if self.ts.checkBox_12.isChecked() == True:
-                use.append(4)
+            self.ts.label_satus.setText("Выберире ARM")
+            # print('Выберире ARM')
 
-            random.shuffle(use)
-            user_rand_id = str(random.choice(use))
-            # print(user_rand_id)
-            flagCnB = flagCnB + 1
+        #  Проверка галочки пользователя
+        if self.ts.checkBox_9.isChecked() == True or self.ts.checkBox_10.isChecked() == True or self.ts.checkBox_11.isChecked() == True or self.ts.checkBox_12.isChecked() == True:
+            flagUID_2 = True
+        else:
+            self.ts.label_satus.setText("Выберире Пользователя")
+            # print('Выберире Пользователя')
+
+        #  Проверка зполнеия полей
+        if self.ts.lineEdit_2.text() != "" and self.ts.lineEdit_3.text() != "" and self.ts.lineEdit_4.text() != "":
+            flagUID_3 = True
+        else:
+            self.ts.label_satus.setText("Заполните параметры отправки")
+            # print('Заполните параметры отправки')
+
+        if self.ts.lineEdit_2.text() == ['A-Z']:
+            self.ts.label_satus.setText("Буква")
 
 
-        if flagCnB == 2:
-            serh = "SELECT name_user FROM Tab_user WHERE id_user = " + user_rand_id
-            cursor.execute(serh)
-            user_rand = cursor.fetchone()
-            for user_rand in user_rand:
-                user_rand = user_rand
 
-            serh = "SELECT passwor_user FROM Tab_user WHERE id_user = " + user_rand_id
-            cursor.execute(serh)
-            passwor_rand = cursor.fetchone()
-            for passwor_rand in passwor_rand:
-                passwor_rand = passwor_rand
+        if flagUID_1 == True and flagUID_2 == True and flagUID_3 == True:
+            self.start_mon()
 
-            serh = "SELECT ip_addres FROM Tab_arm WHERE id_arm = " + arm_rand_id
-            cursor.execute(serh)
-            arm_rand = cursor.fetchone()
-            for arm_rand in arm_rand:
-                arm_rand = arm_rand
+    def start_mon(self):
+        self.ts.label_satus.setText("Загрузка программы")
 
-    # def Thread(self): # Будет выступать в роли декоратора
-    #     for i in range(5):
-    #         print(i)
-    #         time.sleep(5)
-    # def Thread2(self): # Будет выступать в роли декоратора
-    #     for i in range(5):
-    #         print(i)
-    #         time.sleep(5)
-
-    def clic(self):
         # Создаем поток
+        self.terminated = False
         thread = threading.Thread(target=self.copy_text, daemon=True)
         # Запускаем поток
         thread.start()
+
         # Ожидаем завершения потока
-        thread.join()
-        print("Главный поток завершен")
+        # thread.join()
+        # print("Главный поток завершен")
+    def stop_mon(self):
+        self.terminated = True
+        self.ts.label_satus.setStyleSheet("color: #ffffff")
+        self.ts.label_satus.setText("Система остановлена")
 
 
-
-
-
-# Работа с уддаенной машиной
-# ------------------------------------------------------------------------------------------------------------------------------------тут отправка и работа с ssh
-              # recipient = 'lynx2'
-              # self.connect(host=host, username=sender, password=secret)
-              # code = self.send(name=sender, sender_email=sender, recipient_email=recipient, password=secret)
-              # print(code)
-              # self.disconnect()
-#------------------------------------------------------------------------------------------------------------------------------------тут отправка и работа с ssh
-
-
-          # texTab = QtGui.QTextItem('dfsg')
-          # self.ts.tableWidget_2.setItem(1, 1, texTab)
-          #
-          # self.ts.lineEdit_3.setText(text)              # запись в Edit
-#------------------------------------------------------------------------------------------------------------------------------------тут отправка и работа с ssh
-    # def connect (self, host, username, password): #функция отетственна за подключение ssh: ssh lynx@192.168.10.17 + password
-    #     self.exit_code = 0
-    #     try:
-    #         self.client.connect(hostname=host, username=username, password=password, timeout=10)
-    #     except TimeoutError:
-    #         print('Timeout reached while connecting to {0}'.format(host), file=sys.stderr)
-    #         self.exit_code = 3
-    #
-    # def disconnect(self): #exit в ssh
-    #     self.client.close()
-    #
-    # def execute(self, command): #прямое исполнение кода в командной строке
-    #     stdin, stdout, stderr = self.client.exec_command(command)
-    #     exit_code = stdout.channel.recv_exit_status()
-    #     output = stdout.readlines()
-    #     return exit_code, output
-    #
-    # def send(self, name, sender_email, recipient_email, password, verbose=True):
-    #     # exit codes: 0 - ok, 1 - error, 3 - connection timeout
-    #     if not self.exit_code:
-    #         # command1 = './send.sh -n ' + name + \
-    #         #           ' -r ' + recipient_email +  \
-    #         #           ' -u ' + sender_email + \
-    #         #           ' -p ' + password + \
-    #         #           (' -v' if verbose else '')
-    #         command1 = 'ifconfig'
-    #         self.exit_code, output = self.execute(command1)
-    #         if verbose:
-    #             for i in output:
-    #                 print(i, end='')
-    #     return self.exit_code
-    #
-    # def receive(self, name, password, verbose=True, erase=True):
-    #     # exit codes: 0 - ok, 1 - no messages, 2 - error, 3 - connection timeout
-    #
-    #     if not self.exit_code:
-    #         command2 = './receive.sh -u ' + name + ' -p ' + password + ' -i '+ \
-    #                   (' -v' if verbose else '') + (' -e' if erase else '')
-    #         self.exit_code, output = self.execute(command2)
-    #         if verbose:
-    #             for i in output:
-    #                 print(i, end='11')
-    #         if self.exit_code == 0:
-    #             print(i, end='22')
-    #     return self.exit_code
-#------------------------------------------------------------------------------------------------------------------------------------
 
 app = QtWidgets.QApplication([])
 application = Cor()
