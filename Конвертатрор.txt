@@ -1,1 +1,1 @@
-pyuic6 -x D:\FoxScript\Ver_2.0\MyWork\Test.ui -o D:\FoxScript\Ver_2.0\MyWork\Test.py
+pyuic6 -x D:\FoxScript\Ver_2.0\MyWork\Test.ui -o D:\FoxScript\Ver_2.0\MyWork\GUI.py
