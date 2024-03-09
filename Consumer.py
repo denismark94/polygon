@@ -4,13 +4,14 @@ from SSHHandler import SSHHandler
 
 class Consumer:
 
-    def __init__(self,hosts, users, messages, sent, server) -> None:
+    def __init__(self,hosts, users, messages, sent) -> None:
         super().__init__()
         self.hosts = hosts
         self.users = users
         self.messages = messages
         self.sent = sent
-        self.server = server
+        from RequestsFactory import Host
+        self.server = Host(['11.11.11.141', '1', '1'])
         self.ssh_handler = SSHHandler()
         self.sent_cnt = 0
         self.received = 0
@@ -106,7 +107,6 @@ class Consumer:
             print("==============================")
 
     def attack(self, safeprint):
-
         self.refresh_hosts()
         if self.server.status == 'online':
             self.server.dos(datetime.now() + timedelta(seconds = 10))

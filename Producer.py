@@ -4,12 +4,14 @@ import datetime
 # Класс - генератор запросов на отправку/получение/атаку
 class Producer:
     # конструктор принимает класс с набором правил выбора параметров
-    def __init__(self, picker, sent, maliciousHost) -> None:
+    def __init__(self, picker, actions, sent) -> None:
         super().__init__()
         self.picker = picker
-        self.maliciousHost = maliciousHost
-        # self.actions = ['Отправка', 'Получение', 'Атака']
-        self.actions = ['Отправка', 'Получение']
+        # ToDo: ввести в объект АРМ злоумышленника для реализации атак
+        # from RequestsFactory import Host
+        # self.maliciousHost = Host(['11.11.11.69', '1', '1'])
+        # ToDo: реализовать генерацию запросов на атаки
+        self.actions = actions
         self.msg_counter = 0
         self.sent = sent
 
