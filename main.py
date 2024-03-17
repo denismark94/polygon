@@ -125,7 +125,9 @@ if __name__ == '__main__':
     num_of_consumers = 1
     terminated = {'value': False}
 
-    print('1. Инициализация БД узлов сети, пользователей и протоколов обмена')
+    # print('1. Инициализация БД узлов сети, пользователей и протоколов обмена')
+
+
     users, protocols, hosts = load_from_db()
     if verbose:
         print_db(users, protocols, hosts)
@@ -141,10 +143,10 @@ if __name__ == '__main__':
                                            terminated)
 
 
-    time.sleep(15)
-    print("2.1. Прерывание имитации")
-    stop_imit(terminated)
-
+    # time.sleep(15)
+    # print("2.1. Прерывание имитации")
+    # stop_imit(terminated)
+    #
     join_threads(prod_t, cons_ts)
     print('3. Вывод результатов')
     show_stat(consumer)

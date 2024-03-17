@@ -1,5 +1,7 @@
 import queue
 from datetime import datetime, timedelta
+
+from RequestsFactory import DBReader
 from SSHHandler import SSHHandler
 
 class Consumer:
@@ -13,6 +15,7 @@ class Consumer:
         from RequestsFactory import Host
         self.server = Host(['11.11.11.141', '1', '1'])
         self.ssh_handler = SSHHandler()
+        self.db_reader = DBReader(1,2,3)
         self.sent_cnt = 0
         self.received = 0
         self.lost = 0
@@ -39,19 +42,25 @@ class Consumer:
         return 0
 
     def send(self, request, safeprint):
-        host = self.hosts[request.host].ip
+        # host = self.hosts[request.host].ip
+        host = self.db_reader.get_ipaddress(request.host)[0]
         message = self.messages[request.message_id]
-        sender = self.users[message.sender]
-        ssh_credentials = sender.credentials[request.host].split(':')
-        smtp_cred_id = message.protocol + len(self.hosts)
-        smtp_credentials = sender.credentials[smtp_cred_id].split(':')
-        recipient_address = self.users[message.recipient].credentials[smtp_cred_id].split(":")[0]
-        flag = message.flag
+        # sender = self.db_re [message.sender]
+        # ssh_credentials = sender.credentials[request.host].split(':')
+        ssh_credentials = self.db_reader.get_ssh_credentials(message.sender, request.host)[0]
+        # smtp_cred_id = message.protocol + len(self.hosts)
+        # smtp_credentials = sender.credentials[smtp_cred_id].split(':')
+        smtp_credentials = self.db_reader.get_protocol_credentials(message.sender, message.protocol)[0]
 
+        # recipient_address = self.users[message.recipient].credentials[smtp_cred_id].split(":")[0]
+        recipient_address = self.db_reader.get_protocol_credentials(message.recipient, message.protocol)[0][0]
+        flag = message.flag
+        sender_name = self.db_reader.get_username(message.sender)[0]
         # TODO Убрать заглушку
         # exit_code = self.stub(1)
+
         self.ssh_handler.connect(host=host, username=ssh_credentials[0],password=ssh_credentials[1])
-        exit_code = self.ssh_handler.send(name=sender.name, sender_email=smtp_credentials[0],
+        exit_code = self.ssh_handler.send(name=sender_name, sender_email=smtp_credentials[0],
                                                   recipient_email=recipient_address,password=smtp_credentials[1],
                                                   msg_id='{0}'.format(message.id),flag='{0:08b}'.format(flag))
         self.ssh_handler.disconnect()
@@ -70,11 +79,13 @@ class Consumer:
             print("==============================")
 
     def receive(self, request, safeprint):
-        host = self.hosts[request.host].ip
+        # host = self.hosts[request.host].ip
+        host = self.db_reader.get_ipaddress(request.host)[0]
         message = self.messages[request.message_id]
-        recipient = self.users[message.recipient]
-        ssh_credentials = recipient.credentials[request.host].split(':')
-        smtp_credentials = recipient.credentials[message.protocol].split(':')
+
+        # recipient = self.users[message.recipient]
+        ssh_credentials = self.db_reader.get_ssh_credentials(message.recipient, request.host)[0]
+        smtp_credentials = self.db_reader.get_protocol_credentials(message.recipient, message.protocol)[0]
         # TODO Убрать заглушку
         # exit_code = self.stub(1)
         # flag = "{0:08b}".format(message.flag)
@@ -116,22 +127,26 @@ class Consumer:
             print("==============================")
 
     def erase_mailboxes(self):
-        protocol_id = 0
-        for user in self.users:
-            host = 0
-            ssh_credentials = []
-            smtp_credentials = user.credentials[len(self.hosts) + protocol_id].split(':')
-            for i in range(len(self.hosts)):
-                if user.credentials[i] != '0':
-                    host = self.hosts[i].ip
-                    ssh_credentials = user.credentials[i].split(':')
-                    break
-
-            self.ssh_handler.connect(host=host,username=ssh_credentials[0],password=ssh_credentials[1])
-            self.ssh_handler.receive(name=smtp_credentials[0],password=smtp_credentials[1], msg_id='-1', erase=True)
-            self.ssh_handler.disconnect()
+        self.db_reader.connect_sql_db()
+        protocol_id = self.db_reader.get_protocol_id("smtp")
+        user_ids = self.db_reader.get_protocol_users(protocol_id)
+        available_machines = self.db_reader.get_available_machines(protocol_id)
+        for user in user_ids:
+            username = self.db_reader.get_username(user)[0]
+            ssh_credentials = self.db_reader.get_ssh_credentials(user)
+            for credential in ssh_credentials:
+                host_id = credential[0]
+                if host_id in available_machines:
+                    ipaddress = self.db_reader.get_ipaddress(host_id)[0]
+                    smtp_credentials = self.db_reader.get_protocol_credentials(user, protocol_id)
+                    if smtp_credentials:
+                        self.ssh_handler.connect(host=ipaddress, username=credential[1], password=credential[2])
+                        self.ssh_handler.receive(name=smtp_credentials[0][0],password=smtp_credentials[0][1], msg_id='-1', erase=True)
+                        self.ssh_handler.disconnect()
+                        print("Почта для пользователя {0} на АРМ {1} очищена".format(username, ipaddress))
 
     def consume(self, requests, stat, safeprint, terminated):
+        self.db_reader.connect_sql_db()
         i = 0
         import time
         while not (terminated['value'] and requests.empty()):

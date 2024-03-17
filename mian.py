@@ -103,11 +103,11 @@ class Cor(QtWidgets.QMainWindow):
 
     def DB_create(self):
         print("Тут вот базы мутятся")
-        connection = sqlite3.connect('BaseConnect.db')
+        connection = sqlite3.connect('db/BaseConnect.db')
         connection.close()
 
         # загружаем данные в db
-        with sqlite3.connect('BaseConnect.db') as db:
+        with sqlite3.connect('db/BaseConnect.db') as db:
             cursor = db.cursor()
 
         # создаём таблицы в db
@@ -132,11 +132,11 @@ class Cor(QtWidgets.QMainWindow):
         global passwor_rand
         global arm_rand
 
-        connection = sqlite3.connect('BaseConnect.db')
+        connection = sqlite3.connect('db/BaseConnect.db')
         connection.close()
 
  # загружаем данные в db
-        with sqlite3.connect('BaseConnect.db') as db:
+        with sqlite3.connect('db/BaseConnect.db') as db:
             cursor = db.cursor()
 
         flagCnB = 0
