@@ -1,0 +1,69 @@
+[SETTINGS]
+conf_id = 5
+1 = a
+2 = b
+3 = c
+4 = d
+5 = f
+
+
+[a]
+inter = 4
+kolvopot = 4
+post = 15
+interchek = 6
+arm1 = 0
+arm2 = 1
+arm3 = 0
+arm4 = 1
+lynx = 1
+fox = 0
+
+[b]
+inter = 4
+kolvopot = 4
+post = 15
+interchek = 6
+arm1 = 0
+arm2 = 1
+arm3 = 0
+arm4 = 1
+lynx = 1
+fox = 0
+
+[c]
+inter = 4
+kolvopot = 4
+post = 15
+interchek = 6
+arm1 = 0
+arm2 = 1
+arm3 = 0
+arm4 = 1
+lynx = 1
+fox = 0
+
+[d]
+inter = 4
+kolvopot = 4
+post = 15
+interchek = 6
+arm1 = 0
+arm2 = 1
+arm3 = 0
+arm4 = 1
+lynx = 1
+fox = 0
+
+[f]
+inter = 4
+kolvopot = 4
+post = 15
+interchek = 6
+arm1 = 0
+arm2 = 1
+arm3 = 0
+arm4 = 1
+lynx = 1
+fox = 0
+

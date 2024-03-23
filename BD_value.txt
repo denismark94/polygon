@@ -31,3 +31,6 @@ lynx kali
 fox forest
 
 
+arm_rand
+passwor_rand
+user_rand
