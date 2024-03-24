@@ -14,12 +14,19 @@ class Producer:
         self.actions = actions
         self.gen_msg_counter = 0
         self.sent = sent
+        self.terminated = False
+        self.interrupted = False
 
     # Метод генерирует и складывает в очередь случайные запросы на отправку/получение/атаку
     def produce(self, iterations, messages, requests, safeprint, verbose=False, terminated=False):
+        self.terminated = False
+        self.interrupted = False
         i = 0
         self.picker.dbreader.connect_sql_db()
         while i < iterations:
+            if self.interrupted:
+                print("Выполнение потока-генератора прервано")
+                return
             import time
             time.sleep(5)
             action_type = random.choice(self.actions)
@@ -83,4 +90,4 @@ class Producer:
                     else:
                         print('Стек сообщений пуст')
                 print("==============================")
-        terminated['value'] = True
+        self.terminated = True

@@ -18,6 +18,8 @@ class Consumer:
         self.lost = 0
         self.corrupted = 0
         self.processed = 0
+        self.interrupted = False
+        self.interrupted = False
 
     def getRequest(self, requests, safeprint):
         self.db_reader.connect_sql_db()
@@ -130,11 +132,16 @@ class Consumer:
                         self.ssh_handler.disconnect()
                         print("Почта для пользователя {0} на АРМ {1} очищена".format(username, ipaddress))
 
-    def consume(self, requests, stat, safeprint, terminated):
+    def consume(self, requests, stat, safeprint, producing_finished=False):
         self.db_reader = DBReader(self.db)
         i = 0
         import time
-        while not (terminated['value'] and requests.empty()):
+        # ToDo: продумать условия завершения работы обработчика
+        # По идее, если очередь пуста и генератор закончил работу - можно заканчивать
+        while not (producing_finished and requests.empty()):
+            if self.interrupted:
+                print('Выполнение потока-обработчика прервано')
+                return
             if requests.empty():
                 continue
             if i > 0 and i % 5 == 0:
@@ -144,5 +151,6 @@ class Consumer:
                     stat.append(0)
             self.getRequest(requests, safeprint)
             i += 1
+        print('Выполнение потока-обработчика завершено. Обработаны все запросы')
 
 

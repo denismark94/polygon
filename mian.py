@@ -4,11 +4,19 @@ import paramiko
 import sqlite3
 import random
 import threading
+import queue
+import _thread
 import configparser
 
 from PyQt6 import QtGui
 from GUI import Ui_MainWindow
-from PyQt6 import QtWidgets
+from PyQt6 import QtWidgets, QtCore
+from matplotlib import pyplot, animation
+
+from RequestsFactory import *
+from Consumer import Consumer
+from Producer import Producer
+import pyqtgraph as pg
 
 
 # График
@@ -27,10 +35,13 @@ class Cor(QtWidgets.QMainWindow):
     arm_rand = ""
     passwor_rand = ""
     user_rand = ""
+    db = 'db/BaseConnect.db'
 
 
     def __init__(self):
         super(Cor, self).__init__()
+        self.consumer = None
+        self.producer = None
         self.ts = Ui_MainWindow()
         self.ts.setupUi(self)
         self.init_UI()
@@ -44,55 +55,12 @@ class Cor(QtWidgets.QMainWindow):
         self.setWindowTitle("Оператор")
         self.setWindowIcon(QtGui.QIcon('Logo.ico'))
         self.add_conLine()
-
+        self.draw_graph()
         self.ts.btn_connect.clicked.connect(self.chek_UID)
         self.ts.btn_stop.clicked.connect(self.stop_mon)
         self.ts.btn_conf.clicked.connect(self.donw_config)
         self.ts.btn_conf_add.clicked.connect(self.add_config)
         self.ts.btn_conf_del.clicked.connect(self.del_config)
-
-    def copy_text(self):
-        self.ts.label_satus.setText("Чтение данных")
-        text = self.ts.lineEdit_2.text()              # чтение с Edit
-        host = text
-        text = self.ts.lineEdit_3.text()              # чтение с Edit
-        sender = text
-        text = self.ts.lineEdit_4.text()              # чтение с Edit
-        secret = text
-
-        if (host != '') or (sender != '') or (secret != ''):
-            # self.create_task()
-            self.ts.label_satus.setText("Система активна")
-            self.ts.label_satus.setStyleSheet("color: #ee3300")
-
-            self.ts.progressBar.setProperty("value", 0)
-            for i in range(int(secret)):
-
-                if self.terminated:
-                    print("execution aborted")
-                    self.ts.progressBar.setValue(0)
-                    self.terminated = False
-                    return
-
-                print('--------------------------->', i+1)
-                self.create_task()
-
-                global arm_rand
-                print(arm_rand)
-                global user_rand
-                print(user_rand)
-                global passwor_rand
-                print(passwor_rand)
-                print(self.ts.comboBox.currentText())
-
-                MaxBar = int(secret)
-                self.ts.progressBar.setProperty("maximum", MaxBar)
-                self.ts.progressBar.setProperty("value", i+1)
-
-                time.sleep(int(host))  # Задержка на заданное число
-        else:
-            print('Ошибка чтения данных')
-            # тут должно быть что-то типо получены ли данные или нет, если не получчили то ждём пока будут
 
 
     def DB_create(self):
@@ -126,11 +94,11 @@ class Cor(QtWidgets.QMainWindow):
         global passwor_rand
         global arm_rand
 
-        connection = sqlite3.connect('db/BaseConnect.db')
+        connection = sqlite3.connect(self.db)
         connection.close()
 
- # загружаем данные в db
-        with sqlite3.connect('db/BaseConnect.db') as db:
+        # загружаем данные в db
+        with sqlite3.connect(self.db) as db:
             cursor = db.cursor()
 
         flagCnB = 0
@@ -209,13 +177,13 @@ class Cor(QtWidgets.QMainWindow):
             # print('Выберире Пользователя')
 
         #  Проверка зполнеия полей
-        if self.ts.lineEdit_2.text() != "" and self.ts.lineEdit_3.text() != "" and self.ts.lineEdit_4.text() != "":
+        if self.ts.le_delay.text() != "" and self.ts.le_num_of_thr.text() != "" and self.ts.le_num_of_msgs.text() != "":
             flagUID_3 = True
         else:
             self.ts.label_satus.setText("Заполните параметры отправки")
             # print('Заполните параметры отправки')
 
-        if self.ts.lineEdit_2.text() == ['A-Z']:
+        if self.ts.le_delay.text() == ['A-Z']:
             self.ts.label_satus.setText("Буква")
 
 
@@ -229,10 +197,10 @@ class Cor(QtWidgets.QMainWindow):
         config.read("Conf.ini")  # читаем конфиг
         donw_param = self.ts.comboBox_2.currentText()
 
-        self.ts.lineEdit_2.setText(str(config[donw_param]['Inter']))  # запись из ini в Edit
-        self.ts.lineEdit_3.setText(str(config[donw_param]['KolvoPot']))
-        self.ts.lineEdit_4.setText(str(config[donw_param]['Post']))
-        self.ts.lineEdit_5.setText(str(config[donw_param]['InterChek']))
+        self.ts.le_delay.setText(str(config[donw_param]['Inter']))  # запись из ini в Edit
+        self.ts.le_num_of_thr.setText(str(config[donw_param]['KolvoPot']))
+        self.ts.le_num_of_msgs.setText(str(config[donw_param]['Post']))
+        self.ts.le_chk_int.setText(str(config[donw_param]['InterChek']))
         if int(config[donw_param]['ARM1']) == 1:
             self.ts.checkBox.setChecked(True)
         else:
@@ -253,15 +221,25 @@ class Cor(QtWidgets.QMainWindow):
         else:
             self.ts.checkBox_4.setChecked(False)
 
-        if int(config[donw_param]['Lynx']) == 1:
+        if int(config[donw_param]['Alice']) == 1:
             self.ts.checkBox_9.setChecked(True)
         else:
             self.ts.checkBox_9.setChecked(False)
 
-        if int(config[donw_param]['Fox']) == 1:
+        if int(config[donw_param]['Bob']) == 1:
             self.ts.checkBox_10.setChecked(True)
         else:
             self.ts.checkBox_10.setChecked(False)
+
+        if int(config[donw_param]['Claire']) == 1:
+            self.ts.checkBox_11.setChecked(True)
+        else:
+            self.ts.checkBox_11.setChecked(False)
+
+        if int(config[donw_param]['Admin']) == 1:
+            self.ts.checkBox_12.setChecked(True)
+        else:
+            self.ts.checkBox_12.setChecked(False)
 
         self.ts.label_satus.setText("Файл конфигурации загружен")
 
@@ -274,16 +252,16 @@ class Cor(QtWidgets.QMainWindow):
             self.ts.comboBox_2.addItem(sector)
             config.add_section(sector)
 
-            Inter = self.ts.lineEdit_2.text()
+            Inter = self.ts.le_delay.text()
             config.set(sector, 'Inter', Inter)
 
-            KolvoPot = self.ts.lineEdit_3.text()
+            KolvoPot = self.ts.le_num_of_thr.text()
             config.set(sector, 'KolvoPot', KolvoPot)
 
-            Post = self.ts.lineEdit_4.text()
+            Post = self.ts.le_num_of_msgs.text()
             config.set(sector, 'Post', Post)
 
-            InterChek = self.ts.lineEdit_5.text()
+            InterChek = self.ts.le_chk_int.text()
             config.set(sector, 'InterChek', InterChek)
 
             if self.ts.checkBox.isChecked() == True:
@@ -431,10 +409,9 @@ class Cor(QtWidgets.QMainWindow):
 
     def start_mon(self):
         self.ts.label_satus.setText("Загрузка программы")
-
-        # Создаем поток
         self.terminated = False
         thread = threading.Thread(target=self.copy_text, daemon=True)
+
         # Запускаем поток
         thread.start()
 
@@ -443,10 +420,151 @@ class Cor(QtWidgets.QMainWindow):
         # print("Главный поток завершен")
     def stop_mon(self):
         self.terminated = True
+        self.producer.interrupted = True
+        self.consumer.interrupted = True
         self.ts.label_satus.setStyleSheet("color: #ffffff")
         self.ts.label_satus.setText("Система остановлена")
 
+    def start_imit(self, num_of_msgs, num_of_consumers):
+        terminated = False
+        messages = {}
+        requests = queue.Queue()
+        sent = []
+        actions = ['Отправка', 'Получение']
+        self.stat = []
+        verbose = True
+        picker = Picker(self.db)
+        self.producer = Producer(picker, actions, sent)
+        self.consumer = Consumer(self.db, messages, sent)
+        self.consumer.erase_mailboxes()
+        safeprint = _thread.allocate_lock()
+        producing_thread = threading.Thread(target=self.producer.produce,
+                                            args=(num_of_msgs, messages, requests, safeprint, verbose, terminated))
+        producing_thread.daemon = True
+        producing_thread.start()
+        consuming_threads = []
+        for i in range(num_of_consumers):
+            ct = threading.Thread(target=self.consumer.consume,
+                                  args=(requests, self.stat, safeprint, terminated))
+            ct.daemon = True
+            ct.start()
+            consuming_threads.append(ct)
+        return producing_thread, consuming_threads
 
+    def check_input(self):
+        return (self.ts.le_delay.text() != '') and \
+               (self.ts.le_num_of_thr.text() != '') and \
+               (self.ts.le_num_of_msgs.text() != '') and \
+               (self.ts.le_chk_int.text() != '')
+
+    def copy_text(self):
+        self.ts.label_satus.setText("Чтение данных")
+        terminated = False
+        if self.check_input():
+            delay = int(self.ts.le_delay.text())
+            num_of_threads = int(self.ts.le_num_of_thr.text())
+            num_of_msgs = int(self.ts.le_num_of_msgs.text())
+            check_interval = int(self.ts.le_chk_int.text())
+            num_of_threads = 1
+            minutes = 1
+            timeout = minutes * 100
+            self.ts.label_satus.setText("Имитация...")
+            self.ts.label_satus.setStyleSheet("color: #ee3300")
+            self.ts.progressBar.setValue(0)
+            self.ts.progressBar.setMaximum(100)
+            self.set_grid(timeout)
+
+            producing_thread, consuming_threads = self.start_imit(num_of_msgs, num_of_threads)
+            for i in range(timeout):
+                if self.terminated:
+                    print("execution aborted")
+                    self.ts.progressBar.setValue(0)
+                    self.terminated = False
+                    return
+                # print('--------------------------->', i+1)
+                # self.create_task()
+
+                # global arm_rand
+                # print(arm_rand)
+                # global user_rand
+                # print(user_rand)
+                # global passwor_rand
+                # print(passwor_rand)
+                # print(self.ts.comboBox.currentText())
+                self.y[i] = random.randint(0,10)/10
+                self.line.setData(self.x, self.y)
+
+                # MaxBar = int(num_of_msgs)
+                self.ts.progressBar.setValue(int((i+1) * 100 / timeout))
+                print(self.stat)
+                time.sleep(1)  # Задержка на заданное число
+            # ToDo: переделать. выглядит коряво
+            terminated = True
+        else:
+            self.ts.label_satus.setText('Ошибка чтения данных')
+            # тут должно быть что-то типо получены ли данные или нет, если не получчили то ждём пока будут
+        if terminated:
+            self.producer.interrupted = True
+            self.consumer.interrupted = True
+            self.join_threads(producing_thread, consuming_threads)
+            self.ts.label_satus.setText("Имитация завершена")
+            self.show_stat()
+
+    def join_threads(self, producer_thread, consuming_threads):
+        producer_thread.join()
+        for ct in consuming_threads:
+            ct.join()
+
+    def show_stat(self):
+        print("Статистика.")
+        print("Обработано:", self.consumer.processed)
+        print("Отправлено:", self.consumer.sent_cnt)
+        print("Принято:", self.consumer.received)
+        print("Утеряно:", self.consumer.lost)
+        print("Повреждено:", self.consumer.corrupted)
+
+    def draw_graph(self):
+        font = QtGui.QFont()
+        font.setFamily("GOST type B")
+        self.ts.GraphWidget.setFont(font)
+        self.ts.GraphWidget.setBackground("transparent")  # цвет фона
+        self.ts.GraphWidget.setTitle(
+            "<span style=\"color:white;font-size:20pt;font-family:'GOST type B'\">Защищенность системы</span>")
+        styles = {"color": "white", "font-size": "18px", "font-family": "GOST type B"}
+        self.ts.GraphWidget.setLabel("left", "Среднее значение", **styles)
+
+        self.ts.GraphWidget.setLabel("bottom", "Время, с", **styles)
+        self.ts.GraphWidget.showGrid(x=True, y=True, )
+        self.ts.GraphWidget.setXRange(0, 100)
+        self.ts.GraphWidget.setYRange(0, 1)
+
+
+    def set_grid(self, timeout):
+        self.x = list(range(timeout))
+        self.y = [0 for _ in range(timeout)]
+        pen = pg.mkPen(color=(255, 0, 0))  # цвет контура в RGB
+        self.line = self.ts.GraphWidget.plot(
+            self.x,
+            self.y,
+            name="Среднее значение",
+            pen=pen,
+        )
+        # Add a timer to simulate new temperature measurements
+        # self.timer = QtCore.QTimer()
+        # self.timer.setInterval(300)
+        # self.timer.timeout.connect(self.update_graph)
+        # self.timer.start()
+    def update_graph(self):
+        # time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        # temperature = [30, 32, 34, 32, 33, 31, 29, 32, 35, 30]
+        # self.ts.GraphWidget.plot(time, temperature)
+        # self.ts.GraphWidget.plot(time, temperature)
+        self.x = self.x[1:]
+        self.x.append(self.x[-1] + 1)
+        self.y = self.y[1:]
+        from random import randint
+        self.y.append(randint(20, 40))
+        self.line.setData(self.x, self.y)
 
 app = QtWidgets.QApplication([])
 application = Cor()

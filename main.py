@@ -9,7 +9,7 @@ from Producer import Producer
 
 
 # Запуск имитации с определенными пользователем параметрами
-def start_imit(db, timeout, delay, num_of_msgs, num_of_consumers, terminated):
+def start_imit(db, timeout, delay, num_of_msgs, num_of_consumers, terminated, verbose):
     # словарь под сгенерированные в ходе работы сообщения
     messages = {}
     # Очередь задач
@@ -57,13 +57,6 @@ def join_threads(producer_thread, consuming_threads):
         ct.join()
 
 
-def show_stat(consumer):
-    print("Статистика.")
-    print("Обработано:", consumer.processed)
-    print("Отправлено:", consumer.sent_cnt)
-    print("Принято:", consumer.received)
-    print("Утеряно:", consumer.lost)
-    print("Повреждено:", consumer.corrupted)
 
 
 if __name__ == '__main__':
@@ -75,7 +68,7 @@ if __name__ == '__main__':
     terminated = {'value': False}
     db = 'db/BaseConnect.db'
     print('Генерация запросов')
-    prod_t, cons_ts, consumer = start_imit(db, timeout, delay, num_of_msgs, num_of_consumers, terminated)
+    prod_t, cons_ts, consumer = start_imit(db, timeout, delay, num_of_msgs, num_of_consumers, terminated, verbose)
     # time.sleep(15)
     # print("2.1. Прерывание имитации")
     # stop_imit(terminated)
