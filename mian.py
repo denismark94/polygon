@@ -24,10 +24,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
-        #
-        # grid = QtWidgets.QGridLayout(self.centralwidget)
-        # grid.addWidget(self.graphWidget, 4, 7)
-        # self.plot([1,2,3,4,5,6,7,8,9,10], [30,32,34,32,33,31,29,32,35,45])
 
 
 class Cor(QtWidgets.QMainWindow):
@@ -40,6 +36,8 @@ class Cor(QtWidgets.QMainWindow):
 
     def __init__(self):
         super(Cor, self).__init__()
+        self.real = False
+        self.producing_thread = None
         self.consumer = None
         self.producer = None
         self.ts = Ui_MainWindow()
@@ -51,17 +49,20 @@ class Cor(QtWidgets.QMainWindow):
         self.exit_code = 0
 
 
+
     def init_UI(self):
         self.setWindowTitle("Оператор")
         self.setWindowIcon(QtGui.QIcon('Logo.ico'))
         self.add_conLine()
-        self.draw_graph()
-        self.ts.btn_connect.clicked.connect(self.chek_UID)
+        self.ts.btn_connect.clicked.connect(self.start_mon)
         self.ts.btn_stop.clicked.connect(self.stop_mon)
         self.ts.btn_conf.clicked.connect(self.donw_config)
         self.ts.btn_conf_add.clicked.connect(self.add_config)
         self.ts.btn_conf_del.clicked.connect(self.del_config)
+        self.ts.chb_imitate.toggled.connect(self.upd_work_type)
 
+    def upd_work_type(self):
+        self.real = not self.ts.chb_imitate.isChecked()
 
     def DB_create(self):
         print("Тут вот базы мутятся")
@@ -186,8 +187,6 @@ class Cor(QtWidgets.QMainWindow):
         if self.ts.le_delay.text() == ['A-Z']:
             self.ts.label_satus.setText("Буква")
 
-
-
         if flagUID_1 == True and flagUID_2 == True and flagUID_3 == True:
             self.start_mon()
 
@@ -201,6 +200,7 @@ class Cor(QtWidgets.QMainWindow):
         self.ts.le_num_of_thr.setText(str(config[donw_param]['KolvoPot']))
         self.ts.le_num_of_msgs.setText(str(config[donw_param]['Post']))
         self.ts.le_chk_int.setText(str(config[donw_param]['InterChek']))
+        self.ts.le_timeout.setText(str(config[donw_param]['Timeout']))
         if int(config[donw_param]['ARM1']) == 1:
             self.ts.checkBox.setChecked(True)
         else:
@@ -236,7 +236,7 @@ class Cor(QtWidgets.QMainWindow):
         else:
             self.ts.checkBox_11.setChecked(False)
 
-        if int(config[donw_param]['Admin']) == 1:
+        if int(config[donw_param]['David']) == 1:
             self.ts.checkBox_12.setChecked(True)
         else:
             self.ts.checkBox_12.setChecked(False)
@@ -263,6 +263,9 @@ class Cor(QtWidgets.QMainWindow):
 
             InterChek = self.ts.le_chk_int.text()
             config.set(sector, 'InterChek', InterChek)
+
+            timeout = self.ts.le_timeout.text()
+            config.set(sector, 'timeout', timeout)
 
             if self.ts.checkBox.isChecked() == True:
                 config.set(sector, 'ARM1', '1')
@@ -408,20 +411,24 @@ class Cor(QtWidgets.QMainWindow):
             i = i+1
 
     def start_mon(self):
-        self.ts.label_satus.setText("Загрузка программы")
-        self.terminated = False
-        thread = threading.Thread(target=self.copy_text, daemon=True)
+        if self.check_input():
+            self.ts.label_satus.setText("Загрузка программы")
+            self.terminated = False
+            print(self.real)
+            if self.real:
+                num_of_threads = int(self.ts.le_num_of_thr.text())
+                num_of_msgs = int(self.ts.le_num_of_msgs.text())
+                self.start_imit(num_of_msgs, num_of_threads)
+            pb_thread = threading.Thread(target=self.update_progressbar, daemon=True)
+            pb_thread.start()
+            plot_thread = threading.Thread(target=self.update_plot, daemon=True)
+            plot_thread.start()
 
-        # Запускаем поток
-        thread.start()
-
-        # Ожидаем завершения потока
-        # thread.join()
-        # print("Главный поток завершен")
     def stop_mon(self):
         self.terminated = True
-        self.producer.interrupted = True
-        self.consumer.interrupted = True
+        if self.real:
+            self.producer.interrupted = True
+            self.consumer.interrupted = True
         self.ts.label_satus.setStyleSheet("color: #ffffff")
         self.ts.label_satus.setText("Система остановлена")
 
@@ -436,79 +443,99 @@ class Cor(QtWidgets.QMainWindow):
         picker = Picker(self.db)
         self.producer = Producer(picker, actions, sent)
         self.consumer = Consumer(self.db, messages, sent)
-        self.consumer.erase_mailboxes()
+        # self.consumer.erase_mailboxes()
         safeprint = _thread.allocate_lock()
-        producing_thread = threading.Thread(target=self.producer.produce,
+        self.producing_thread = threading.Thread(target=self.producer.produce,
                                             args=(num_of_msgs, messages, requests, safeprint, verbose, terminated))
-        producing_thread.daemon = True
-        producing_thread.start()
-        consuming_threads = []
+        self.producing_thread.daemon = True
+        self.producing_thread.start()
+        self.consuming_threads = []
         for i in range(num_of_consumers):
             ct = threading.Thread(target=self.consumer.consume,
                                   args=(requests, self.stat, safeprint, terminated))
             ct.daemon = True
             ct.start()
-            consuming_threads.append(ct)
-        return producing_thread, consuming_threads
+            self.consuming_threads.append(ct)
 
     def check_input(self):
-        return (self.ts.le_delay.text() != '') and \
-               (self.ts.le_num_of_thr.text() != '') and \
-               (self.ts.le_num_of_msgs.text() != '') and \
-               (self.ts.le_chk_int.text() != '')
+        self.ts.label_satus.setText("Проверка параметров работы")
 
-    def copy_text(self):
-        self.ts.label_satus.setText("Чтение данных")
-        terminated = False
-        if self.check_input():
-            delay = int(self.ts.le_delay.text())
-            num_of_threads = int(self.ts.le_num_of_thr.text())
-            num_of_msgs = int(self.ts.le_num_of_msgs.text())
-            check_interval = int(self.ts.le_chk_int.text())
-            num_of_threads = 1
-            minutes = 1
-            timeout = minutes * 100
-            self.ts.label_satus.setText("Имитация...")
-            self.ts.label_satus.setStyleSheet("color: #ee3300")
-            self.ts.progressBar.setValue(0)
-            self.ts.progressBar.setMaximum(100)
-            self.set_grid(timeout)
+        arm_selected = self.ts.checkBox.isChecked() or \
+                    self.ts.checkBox_2.isChecked() or \
+                    self.ts.checkBox_3.isChecked() or \
+                    self.ts.checkBox_4.isChecked()
 
-            producing_thread, consuming_threads = self.start_imit(num_of_msgs, num_of_threads)
-            for i in range(timeout):
-                if self.terminated:
-                    print("execution aborted")
-                    self.ts.progressBar.setValue(0)
-                    self.terminated = False
-                    return
-                # print('--------------------------->', i+1)
-                # self.create_task()
+        user_selected = self.ts.checkBox_9.isChecked() or \
+                    self.ts.checkBox_10.isChecked() or \
+                    self.ts.checkBox_11.isChecked() or \
+                    self.ts.checkBox_12.isChecked()
 
-                # global arm_rand
-                # print(arm_rand)
-                # global user_rand
-                # print(user_rand)
-                # global passwor_rand
-                # print(passwor_rand)
-                # print(self.ts.comboBox.currentText())
-                self.y[i] = random.randint(0,10)/10
-                self.line.setData(self.x, self.y)
+        fields_filled = (self.ts.le_delay.text() != '') and \
+                        (self.ts.le_num_of_thr.text() != '') and \
+                        (self.ts.le_num_of_msgs.text() != '') and \
+                        (self.ts.le_chk_int.text() != '') and \
+                        (self.ts.le_timeout.text() != '')
+        if fields_filled:
+            data_correct = int(self.ts.le_chk_int.text()) <= int(self.ts.le_timeout.text())
+        if not arm_selected:
+            self.ts.label_satus.setText("Выберите ARM")
+            return False
+        elif not user_selected:
+            self.ts.label_satus.setText("Выберите Пользователя")
+            return  False
+        elif not fields_filled:
+            self.ts.label_satus.setText("Заполните параметры отправки")
+            return False
+        elif not data_correct:
+            self.ts.label_satus.setText("Интервал проверки превышает время имитации")
+            return False
+        return True
 
-                # MaxBar = int(num_of_msgs)
-                self.ts.progressBar.setValue(int((i+1) * 100 / timeout))
-                print(self.stat)
-                time.sleep(1)  # Задержка на заданное число
-            # ToDo: переделать. выглядит коряво
-            terminated = True
-        else:
-            self.ts.label_satus.setText('Ошибка чтения данных')
-            # тут должно быть что-то типо получены ли данные или нет, если не получчили то ждём пока будут
-        if terminated:
+    def update_progressbar(self):
+        self.ts.label_satus.setText("Имитация...")
+        self.ts.label_satus.setStyleSheet("color: #ee3300")
+        self.ts.progressBar.setValue(0)
+        self.ts.progressBar.setMaximum(100)
+        self.terminated = False
+        timeout = int(self.ts.le_timeout.text()) * 60
+        update_delay = timeout / 100
+        for i in range(101):
+            if self.terminated:
+                print("execution aborted")
+                self.ts.progressBar.setValue(0)
+                self.terminated = False
+                return
+            time.sleep(update_delay)
+            self.ts.progressBar.setValue(i)
+        self.terminated = True
+        self.ts.label_satus.setText("Имитация завершена")
+        if self.real:
             self.producer.interrupted = True
             self.consumer.interrupted = True
-            self.join_threads(producing_thread, consuming_threads)
-            self.ts.label_satus.setText("Имитация завершена")
+            self.join_threads(self.producing_thread, self.consuming_threads)
             self.show_stat()
+
+    def update_plot(self):
+        timeout = int(self.ts.le_timeout.text()) * 60
+        check_interval = int(self.ts.le_chk_int.text())
+        probes = int(timeout / check_interval)
+        print(probes)
+        self.ts.GraphWidget.setXRange(0, probes + 1)
+        self.set_grid(probes + 1)
+        for i in range(probes):
+            if self.terminated:
+                return
+            if self.real:
+                print("Обработано:", self.consumer.processed)
+                print("Отправлено:", self.consumer.sent_cnt)
+                print("Принято:", self.consumer.received)
+                print("Утеряно:", self.consumer.lost)
+                print("Повреждено:", self.consumer.corrupted)
+                self.y[i] = random.randint(0, 10) / 10
+            else:
+                self.y[i] = random.randint(0, 10) / 10
+            self.line.setData(self.x, self.y)
+            time.sleep(check_interval)
 
     def join_threads(self, producer_thread, consuming_threads):
         producer_thread.join()
@@ -523,48 +550,18 @@ class Cor(QtWidgets.QMainWindow):
         print("Утеряно:", self.consumer.lost)
         print("Повреждено:", self.consumer.corrupted)
 
-    def draw_graph(self):
-        font = QtGui.QFont()
-        font.setFamily("GOST type B")
-        self.ts.GraphWidget.setFont(font)
-        self.ts.GraphWidget.setBackground("transparent")  # цвет фона
-        self.ts.GraphWidget.setTitle(
-            "<span style=\"color:white;font-size:20pt;font-family:'GOST type B'\">Защищенность системы</span>")
-        styles = {"color": "white", "font-size": "18px", "font-family": "GOST type B"}
-        self.ts.GraphWidget.setLabel("left", "Среднее значение", **styles)
-
-        self.ts.GraphWidget.setLabel("bottom", "Время, с", **styles)
-        self.ts.GraphWidget.showGrid(x=True, y=True, )
-        self.ts.GraphWidget.setXRange(0, 100)
-        self.ts.GraphWidget.setYRange(0, 1)
-
-
     def set_grid(self, timeout):
         self.x = list(range(timeout))
-        self.y = [0 for _ in range(timeout)]
+        self.y = [1 for _ in range(timeout)]
         pen = pg.mkPen(color=(255, 0, 0))  # цвет контура в RGB
+        self.ts.GraphWidget.clear()
         self.line = self.ts.GraphWidget.plot(
             self.x,
             self.y,
             name="Среднее значение",
             pen=pen,
         )
-        # Add a timer to simulate new temperature measurements
-        # self.timer = QtCore.QTimer()
-        # self.timer.setInterval(300)
-        # self.timer.timeout.connect(self.update_graph)
-        # self.timer.start()
-    def update_graph(self):
-        # time = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-        # temperature = [30, 32, 34, 32, 33, 31, 29, 32, 35, 30]
-        # self.ts.GraphWidget.plot(time, temperature)
-        # self.ts.GraphWidget.plot(time, temperature)
-        self.x = self.x[1:]
-        self.x.append(self.x[-1] + 1)
-        self.y = self.y[1:]
-        from random import randint
-        self.y.append(randint(20, 40))
-        self.line.setData(self.x, self.y)
+
 
 app = QtWidgets.QApplication([])
 application = Cor()

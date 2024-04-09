@@ -20,7 +20,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.comboBox = QtWidgets.QComboBox(parent=self.centralwidget)
-        self.comboBox.setGeometry(QtCore.QRect(90, 137, 61, 31))
+        self.comboBox.setGeometry(QtCore.QRect(90, 157, 61, 31))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(11)
@@ -36,7 +36,7 @@ class Ui_MainWindow(object):
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.label_2 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(10, 144, 81, 16))
+        self.label_2.setGeometry(QtCore.QRect(10, 164, 81, 16))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(12)
@@ -336,6 +336,17 @@ class Ui_MainWindow(object):
         self.le_chk_int.setText("")
         self.le_chk_int.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.le_chk_int.setObjectName("lineEdit_5")
+
+        self.le_timeout = QtWidgets.QLineEdit(parent=self.centralwidget)
+        self.le_timeout.setGeometry(QtCore.QRect(267, 130, 80, 25))
+        self.le_timeout.setFont(font)
+        self.le_timeout.setStyleSheet("border: 2px solid #292d32;\n"
+                                      "border-radius: 8px;\n"
+                                      "color: #ffffff\n"
+                                      "")
+        self.le_timeout.setText("")
+        self.le_timeout.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+
         self.label_10 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_10.setGeometry(QtCore.QRect(357, 105, 41, 20))
         font = QtGui.QFont()
@@ -344,9 +355,19 @@ class Ui_MainWindow(object):
         self.label_10.setFont(font)
         self.label_10.setStyleSheet("color: #ffffff")
         self.label_10.setObjectName("label_10")
+
+        self.lb_timeout_items = QtWidgets.QLabel(parent=self.centralwidget)
+        self.lb_timeout_items.setGeometry(QtCore.QRect(357, 135, 41, 20))
+        self.lb_timeout_items.setFont(font)
+        self.lb_timeout_items.setStyleSheet("color: #ffffff")
+
         self.label_11 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_11.setEnabled(True)
         self.label_11.setGeometry(QtCore.QRect(10, 105, 251, 16))
+        self.lb_timeout = QtWidgets.QLabel(parent=self.centralwidget)
+        self.lb_timeout.setFont(font)
+        self.lb_timeout.setStyleSheet("color: #ffffff")
+        self.lb_timeout.setGeometry(QtCore.QRect(10, 135, 251, 16))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(12)
@@ -354,7 +375,7 @@ class Ui_MainWindow(object):
         self.label_11.setStyleSheet("color: #ffffff")
         self.label_11.setObjectName("label_11")
         self.frame = QtWidgets.QFrame(parent=self.centralwidget)
-        self.frame.setGeometry(QtCore.QRect(20, 176, 91, 176))
+        self.frame.setGeometry(QtCore.QRect(20, 196, 91, 156))
         self.frame.setStyleSheet("border: 2px solid #292d32;\n"
 "border-radius: 8px;\n"
 "color: #ffffff\n"
@@ -399,7 +420,7 @@ class Ui_MainWindow(object):
         self.checkBox_4.setFont(font)
         self.checkBox_4.setObjectName("checkBox_4")
         self.frame_2 = QtWidgets.QFrame(parent=self.centralwidget)
-        self.frame_2.setGeometry(QtCore.QRect(122, 176, 91, 176))
+        self.frame_2.setGeometry(QtCore.QRect(122, 196, 91, 156))
         self.frame_2.setStyleSheet("border: 2px solid #292d32;\n"
 "border-radius: 8px;\n"
 "color: #ffffff\n"
@@ -497,10 +518,21 @@ class Ui_MainWindow(object):
         self.GraphWidget.setGeometry(QtCore.QRect(400, 10, 611, 391))
         self.GraphWidget.setToolTipDuration(0)
         self.GraphWidget.setStyleSheet("border: 2px solid #292d32;\n"
-"border-radius: 8px;\n"
-"color: #ffffff\n"
-"")
+                                        "border-radius: 8px;\n"
+                                        "color: #ffffff;\n")
+
         self.GraphWidget.setObjectName("GraphWidget")
+        self.GraphWidget.setFont(font)
+        self.GraphWidget.setBackground("transparent")  # цвет фона
+        self.GraphWidget.setTitle(
+                "<span style=\"color:white;font-size:20pt;font-family:'GOST type B'\">Защищенность системы</span>")
+        styles = {"color": "white", "font-size": "18px", "font-family": "GOST type B"}
+        self.GraphWidget.setLabel("left", "Среднее значение", **styles)
+        self.GraphWidget.setLabel("bottom", "Время, с", **styles)
+        self.GraphWidget.showGrid(x=True, y=True)
+
+        self.GraphWidget.setXRange(0, 100)
+        self.GraphWidget.setYRange(0, 1)
         self.label_satus = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_satus.setGeometry(QtCore.QRect(20, 370, 371, 21))
         font = QtGui.QFont()
@@ -512,7 +544,7 @@ class Ui_MainWindow(object):
         self.label_satus.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.label_satus.setObjectName("label_satus")
         self.btn_conf_del = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.btn_conf_del.setGeometry(QtCore.QRect(366, 175, 25, 25))
+        self.btn_conf_del.setGeometry(QtCore.QRect(366, 195, 25, 25))
         font = QtGui.QFont()
         font.setPointSize(20)
         self.btn_conf_del.setFont(font)
@@ -533,7 +565,7 @@ class Ui_MainWindow(object):
 "")
         self.btn_conf_del.setObjectName("btn_conf_del")
         self.comboBox_2 = QtWidgets.QComboBox(parent=self.centralwidget)
-        self.comboBox_2.setGeometry(QtCore.QRect(214, 137, 111, 31))
+        self.comboBox_2.setGeometry(QtCore.QRect(214, 157, 111, 31))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(11)
@@ -548,7 +580,7 @@ class Ui_MainWindow(object):
         self.comboBox_2.setInsertPolicy(QtWidgets.QComboBox.InsertPolicy.InsertAtBottom)
         self.comboBox_2.setObjectName("comboBox_2")
         self.label_3 = QtWidgets.QLabel(parent=self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(162, 144, 51, 16))
+        self.label_3.setGeometry(QtCore.QRect(162, 164, 51, 16))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(12)
@@ -556,7 +588,7 @@ class Ui_MainWindow(object):
         self.label_3.setStyleSheet("color: #ffffff")
         self.label_3.setObjectName("label_3")
         self.btn_conf_add = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.btn_conf_add.setGeometry(QtCore.QRect(337, 175, 25, 25))
+        self.btn_conf_add.setGeometry(QtCore.QRect(337, 195, 25, 25))
         font = QtGui.QFont()
         font.setPointSize(14)
         self.btn_conf_add.setFont(font)
@@ -576,6 +608,15 @@ class Ui_MainWindow(object):
 "\n"
 "")
         self.btn_conf_add.setObjectName("btn_conf_add")
+        self.chb_imitate = QtWidgets.QCheckBox(parent=self.centralwidget)
+        self.chb_imitate.setGeometry(QtCore.QRect(230, 240, 120, 22))
+        font = QtGui.QFont()
+        font.setFamily("GOST type B")
+        font.setPointSize(12)
+        self.chb_imitate.setFont(font)
+        self.chb_imitate.setStyleSheet("color: #ffffff")
+        self.chb_imitate.setText("Тестирование")
+        self.chb_imitate.setChecked(True)
         self.label_12 = QtWidgets.QLabel(parent=self.centralwidget)
         self.label_12.setGeometry(QtCore.QRect(357, 45, 41, 20))
         font = QtGui.QFont()
@@ -585,7 +626,7 @@ class Ui_MainWindow(object):
         self.label_12.setStyleSheet("color: #ffffff")
         self.label_12.setObjectName("label_12")
         self.btn_conf = QtWidgets.QPushButton(parent=self.centralwidget)
-        self.btn_conf.setGeometry(QtCore.QRect(327, 137, 65, 31))
+        self.btn_conf.setGeometry(QtCore.QRect(327, 157, 65, 31))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(12)
@@ -607,7 +648,7 @@ class Ui_MainWindow(object):
 "")
         self.btn_conf.setObjectName("btn_conf")
         self.Conf_edit = QtWidgets.QLineEdit(parent=self.centralwidget)
-        self.Conf_edit.setGeometry(QtCore.QRect(229, 175, 103, 25))
+        self.Conf_edit.setGeometry(QtCore.QRect(229, 195, 103, 25))
         font = QtGui.QFont()
         font.setFamily("GOST type B")
         font.setPointSize(11)
@@ -637,11 +678,11 @@ class Ui_MainWindow(object):
         self.label_4.setText(_translate("MainWindow", "Интервал отправки писем:"))
         self.label_6.setText(_translate("MainWindow", "Количество потоков:"))
         item = self.tableWidget_2.verticalHeaderItem(0)
-        item.setText(_translate("MainWindow", "Admin"))
-        item = self.tableWidget_2.verticalHeaderItem(1)
         item.setText(_translate("MainWindow", "Alice"))
-        item = self.tableWidget_2.verticalHeaderItem(2)
+        item = self.tableWidget_2.verticalHeaderItem(1)
         item.setText(_translate("MainWindow", "Bob"))
+        item = self.tableWidget_2.verticalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Claire"))
         item = self.tableWidget_2.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ARM 1"))
         item = self.tableWidget_2.horizontalHeaderItem(1)
@@ -687,7 +728,9 @@ class Ui_MainWindow(object):
         self.label_8.setText(_translate("MainWindow", "сек."))
         self.label_9.setText(_translate("MainWindow", "шт."))
         self.label_10.setText(_translate("MainWindow", "мин."))
+        self.lb_timeout_items.setText(_translate("MainWindow", "мин."))
         self.label_11.setText(_translate("MainWindow", "Интервал проверки:"))
+        self.lb_timeout.setText(_translate("MainWindow", "Время имитации"))
         self.label_5.setText(_translate("MainWindow", "ПЭВМ:"))
         self.checkBox.setText(_translate("MainWindow", "ARM 1"))
         self.checkBox_2.setText(_translate("MainWindow", "ARM 2"))
@@ -697,7 +740,7 @@ class Ui_MainWindow(object):
         self.checkBox_9.setText(_translate("MainWindow", "Alice"))
         self.checkBox_10.setText(_translate("MainWindow", "Bob"))
         self.checkBox_11.setText(_translate("MainWindow", "Claire"))
-        self.checkBox_12.setText(_translate("MainWindow", "Admin"))
+        self.checkBox_12.setText(_translate("MainWindow", "David"))
         self.progressBar.setFormat(_translate("MainWindow", "%p%"))
         self.btn_stop.setText(_translate("MainWindow", "Стоп"))
         self.label_satus.setText(_translate("MainWindow", "Ожидание..."))

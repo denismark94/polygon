@@ -675,3 +675,198 @@
 2024-03-17 22:27:01,307 - INFO - Выполнена команда: ./send.sh -n alice -f alice@polygon.mil.zs -r bob@polygon.mil.zs -u alice@polygon.mil.zs -p 123qweR% -s id:7 -t 00100111
 2024-03-17 22:27:01,307 - INFO - Выполнена команда: Отправка определенной команды/скрипта через функцию SEND
 2024-03-17 22:27:01,308 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:31:46,595 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:31:48,441 - INFO - Authentication (password) successful!
+2024-03-28 00:31:50,947 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i -1 -e
+2024-03-28 00:31:50,948 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-03-28 00:31:50,948 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:31:51,010 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:31:51,262 - INFO - Authentication (password) successful!
+2024-03-28 00:31:52,456 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i -1 -e
+2024-03-28 00:31:52,456 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-03-28 00:31:52,456 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:31:52,499 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:31:52,967 - INFO - Authentication (password) successful!
+2024-03-28 00:31:54,177 - INFO - Выполнена команда: ./receive.sh -u claire -p 123qweR% -i -1 -e
+2024-03-28 00:31:54,177 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-03-28 00:31:54,177 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:31:54,211 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:31:54,628 - INFO - Authentication (password) successful!
+2024-03-28 00:31:55,976 - INFO - Выполнена команда: ./receive.sh -u admin -p 12345678 -i -1 -e
+2024-03-28 00:31:55,976 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-03-28 00:31:55,977 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:32:01,086 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:32:01,191 - INFO - Authentication (password) successful!
+2024-03-28 00:32:24,559 - INFO - Выполнена команда: ./send.sh -n b -f bob@polygon.mil.zs -r admin@polygon.mil.zs -u bob@polygon.mil.zs -p 123qweR% -s id:0 -t 00010110
+2024-03-28 00:32:24,560 - INFO - Выполнена команда: Отправка определенной команды/скрипта через функцию SEND
+2024-03-28 00:32:24,560 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:32:24,609 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:32:24,932 - INFO - Authentication (password) successful!
+2024-03-28 00:32:46,073 - INFO - Выполнена команда: ./send.sh -n a -f admin@polygon.mil.zs -r alice@polygon.mil.zs -u admin@polygon.mil.zs -p 12345678 -s id:1 -t 10010000
+2024-03-28 00:32:46,076 - INFO - Выполнена команда: Отправка определенной команды/скрипта через функцию SEND
+2024-03-28 00:32:46,076 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:32:46,149 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:32:46,487 - INFO - Authentication (password) successful!
+2024-03-28 00:32:48,661 - INFO - Выполнена команда: ./receive.sh -u admin -p 12345678 -i 0
+2024-03-28 00:32:48,661 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-03-28 00:32:48,662 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:32:48,704 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:32:49,171 - INFO - Authentication (password) successful!
+2024-03-28 00:33:10,407 - INFO - Выполнена команда: ./send.sh -n a -f admin@polygon.mil.zs -r bob@polygon.mil.zs -u admin@polygon.mil.zs -p 12345678 -s id:2 -t 01001001
+2024-03-28 00:33:10,408 - INFO - Выполнена команда: Отправка определенной команды/скрипта через функцию SEND
+2024-03-28 00:33:10,408 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:33:10,466 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:33:10,777 - INFO - Authentication (password) successful!
+2024-03-28 00:33:11,410 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i 1
+2024-03-28 00:33:11,411 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-03-28 00:33:11,411 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:33:11,470 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:33:11,700 - INFO - Authentication (password) successful!
+2024-03-28 00:33:33,072 - INFO - Выполнена команда: ./send.sh -n c -f claire@polygon.mil.zs -r bob@polygon.mil.zs -u claire@polygon.mil.zs -p 123qweR% -s id:3 -t 10101111
+2024-03-28 00:33:33,072 - INFO - Выполнена команда: Отправка определенной команды/скрипта через функцию SEND
+2024-03-28 00:33:33,073 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-03-28 00:33:33,880 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-03-28 00:33:35,226 - INFO - Authentication (password) successful!
+2024-03-28 00:33:37,043 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i 2
+2024-03-28 00:33:37,044 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-03-28 00:33:37,044 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 21:21:02,524 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 21:21:02,902 - INFO - Authentication (password) successful!
+2024-04-09 21:21:04,316 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i -1 -e
+2024-04-09 21:21:04,316 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 21:21:04,317 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 21:21:04,364 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 21:21:04,574 - INFO - Authentication (password) successful!
+2024-04-09 21:21:06,094 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i -1 -e
+2024-04-09 21:21:06,095 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 21:21:06,095 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 21:21:06,125 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 21:21:06,313 - INFO - Authentication (password) successful!
+2024-04-09 21:21:07,033 - INFO - Выполнена команда: ./receive.sh -u claire -p 123qweR% -i -1 -e
+2024-04-09 21:21:07,034 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 21:21:07,034 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 21:21:07,082 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 21:21:07,262 - INFO - Authentication (password) successful!
+2024-04-09 21:21:07,948 - INFO - Выполнена команда: ./receive.sh -u david -p 123qweR% -i -1 -e
+2024-04-09 21:21:07,949 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 21:21:07,949 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 21:21:41,163 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 21:21:41,315 - INFO - Authentication (password) successful!
+2024-04-09 21:21:42,214 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i -1 -e
+2024-04-09 21:21:42,216 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 21:21:42,216 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 21:21:42,298 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 21:21:42,514 - INFO - Authentication (password) successful!
+2024-04-09 21:21:43,130 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i -1 -e
+2024-04-09 21:21:43,131 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 21:21:43,131 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 21:21:43,208 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 21:21:43,401 - INFO - Authentication (password) successful!
+2024-04-09 21:21:44,038 - INFO - Выполнена команда: ./receive.sh -u claire -p 123qweR% -i -1 -e
+2024-04-09 21:21:44,039 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 21:21:44,040 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 21:21:44,109 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 21:21:44,297 - INFO - Authentication (password) successful!
+2024-04-09 21:21:44,875 - INFO - Выполнена команда: ./receive.sh -u david -p 123qweR% -i -1 -e
+2024-04-09 21:21:44,875 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 21:21:44,876 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:10:00,937 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:10:01,056 - INFO - Authentication (password) successful!
+2024-04-09 22:10:11,351 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i -1 -e
+2024-04-09 22:10:11,352 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:10:11,352 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:10:11,418 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:10:11,612 - INFO - Authentication (password) successful!
+2024-04-09 22:10:21,883 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i -1 -e
+2024-04-09 22:10:21,884 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:10:21,884 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:10:21,982 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:10:22,160 - INFO - Authentication (password) successful!
+2024-04-09 22:10:32,493 - INFO - Выполнена команда: ./receive.sh -u claire -p 123qweR% -i -1 -e
+2024-04-09 22:10:32,494 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:10:32,495 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:10:32,578 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:10:32,762 - INFO - Authentication (password) successful!
+2024-04-09 22:10:43,095 - INFO - Выполнена команда: ./receive.sh -u david -p 123qweR% -i -1 -e
+2024-04-09 22:10:43,096 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:10:43,096 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:13:33,090 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:13:33,244 - INFO - Authentication (password) successful!
+2024-04-09 22:13:33,638 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i -1 -e
+2024-04-09 22:13:33,638 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:13:33,638 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:13:33,668 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:13:33,881 - INFO - Authentication (password) successful!
+2024-04-09 22:13:34,221 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i -1 -e
+2024-04-09 22:13:34,223 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:13:34,224 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:13:34,310 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:13:34,531 - INFO - Authentication (password) successful!
+2024-04-09 22:13:34,934 - INFO - Выполнена команда: ./receive.sh -u claire -p 123qweR% -i -1 -e
+2024-04-09 22:13:34,935 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:13:34,936 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:13:35,015 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:13:35,285 - INFO - Authentication (password) successful!
+2024-04-09 22:13:35,666 - INFO - Выполнена команда: ./receive.sh -u david -p 123qweR% -i -1 -e
+2024-04-09 22:13:35,667 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:13:35,668 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:14:39,052 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:14:39,515 - INFO - Authentication (password) successful!
+2024-04-09 22:14:40,588 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i -1 -e
+2024-04-09 22:14:40,590 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:14:40,591 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:14:40,754 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:14:40,947 - INFO - Authentication (password) successful!
+2024-04-09 22:14:41,627 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i -1 -e
+2024-04-09 22:14:41,628 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:14:41,630 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:14:41,789 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:14:42,061 - INFO - Authentication (password) successful!
+2024-04-09 22:14:42,539 - INFO - Выполнена команда: ./receive.sh -u claire -p 123qweR% -i -1 -e
+2024-04-09 22:14:42,540 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:14:42,540 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:14:42,603 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:14:42,796 - INFO - Authentication (password) successful!
+2024-04-09 22:14:43,158 - INFO - Выполнена команда: ./receive.sh -u david -p 123qweR% -i -1 -e
+2024-04-09 22:14:43,159 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:14:43,160 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:15:55,754 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:15:55,952 - INFO - Authentication (password) successful!
+2024-04-09 22:15:56,232 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i -1 -e
+2024-04-09 22:15:56,232 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:15:56,233 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:15:56,302 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:15:56,495 - INFO - Authentication (password) successful!
+2024-04-09 22:15:56,862 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i -1 -e
+2024-04-09 22:15:56,863 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:15:56,864 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:15:56,919 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:15:57,100 - INFO - Authentication (password) successful!
+2024-04-09 22:15:57,472 - INFO - Выполнена команда: ./receive.sh -u claire -p 123qweR% -i -1 -e
+2024-04-09 22:15:57,474 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:15:57,474 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:15:57,545 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:15:57,722 - INFO - Authentication (password) successful!
+2024-04-09 22:15:58,073 - INFO - Выполнена команда: ./receive.sh -u david -p 123qweR% -i -1 -e
+2024-04-09 22:15:58,074 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:15:58,075 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:16:54,196 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:16:54,376 - INFO - Authentication (password) successful!
+2024-04-09 22:16:54,722 - INFO - Выполнена команда: ./receive.sh -u alice -p 123qweR% -i -1 -e
+2024-04-09 22:16:54,723 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:16:54,724 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:16:54,808 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:16:54,995 - INFO - Authentication (password) successful!
+2024-04-09 22:16:55,318 - INFO - Выполнена команда: ./receive.sh -u bob -p 123qweR% -i -1 -e
+2024-04-09 22:16:55,320 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:16:55,320 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:16:55,382 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:16:55,582 - INFO - Authentication (password) successful!
+2024-04-09 22:16:55,898 - INFO - Выполнена команда: ./receive.sh -u claire -p 123qweR% -i -1 -e
+2024-04-09 22:16:55,899 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:16:55,900 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
+2024-04-09 22:16:55,992 - INFO - Connected (version 2.0, client OpenSSH_7.4p1)
+2024-04-09 22:16:56,196 - INFO - Authentication (password) successful!
+2024-04-09 22:16:56,521 - INFO - Выполнена команда: ./receive.sh -u david -p 123qweR% -i -1 -e
+2024-04-09 22:16:56,522 - INFO - Выполнена команда: Получение определенныч данных через функцию RECEIVE
+2024-04-09 22:16:56,522 - INFO - Выполнена команда: Выход из сеанса подключения по SSH
