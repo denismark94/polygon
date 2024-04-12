@@ -14,6 +14,7 @@ class SSHHandler:
 
     def connect(self, host, username, password, port=22):
         self.exit_code = 0
+        print(host,username,password)
         try:
             self.client.connect(hostname=host, username=username, password=password, port=port, timeout=10)
         except TimeoutError:

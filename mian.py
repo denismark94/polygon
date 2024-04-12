@@ -412,13 +412,16 @@ class Cor(QtWidgets.QMainWindow):
 
     def start_mon(self):
         if self.check_input():
+            # ToDo убрать повторяющиеся processEvents()
             self.ts.label_satus.setText("Загрузка программы")
+            QtCore.QCoreApplication.processEvents()
+            print("Загрузка программы")
             self.terminated = False
-            print(self.real)
             if self.real:
                 num_of_threads = int(self.ts.le_num_of_thr.text())
                 num_of_msgs = int(self.ts.le_num_of_msgs.text())
-                self.start_imit(num_of_msgs, num_of_threads)
+                if not self.start_imit(num_of_msgs, num_of_threads):
+                    return
             pb_thread = threading.Thread(target=self.update_progressbar, daemon=True)
             pb_thread.start()
             plot_thread = threading.Thread(target=self.update_plot, daemon=True)
@@ -443,6 +446,15 @@ class Cor(QtWidgets.QMainWindow):
         picker = Picker(self.db)
         self.producer = Producer(picker, actions, sent)
         self.consumer = Consumer(self.db, messages, sent)
+        self.ts.label_satus.setText("Проверка доступности АРМ")
+        QtCore.QCoreApplication.processEvents()
+
+        print("Проверка доступности АРМ")
+        if not self.consumer.check_connection():
+            self.ts.label_satus.setText("Ряд выбранных АРМ недоступен")
+            print("Ряд выбранных АРМ недоступен")
+            return False
+        # ToDo: реализовать кнопку "очистить почтовые ящики"
         # self.consumer.erase_mailboxes()
         safeprint = _thread.allocate_lock()
         self.producing_thread = threading.Thread(target=self.producer.produce,
@@ -456,9 +468,11 @@ class Cor(QtWidgets.QMainWindow):
             ct.daemon = True
             ct.start()
             self.consuming_threads.append(ct)
+        return True
 
     def check_input(self):
         self.ts.label_satus.setText("Проверка параметров работы")
+        QtCore.QCoreApplication.processEvents()
 
         arm_selected = self.ts.checkBox.isChecked() or \
                     self.ts.checkBox_2.isChecked() or \

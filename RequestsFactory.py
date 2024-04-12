@@ -50,6 +50,10 @@ class DBReader:
         query = "SELECT id_user FROM Tab_user"
         return self.get_ids(query)
 
+    def get_host_ids(self):
+        query = "SELECT id_arm FROM Tab_arm"
+        return self.get_ids(query)
+
     def get_protocol_users(self, protocol_id):
         query = "SELECT id_user FROM exchange_credentials where id_protocol = " + str(protocol_id)
         return self.get_ids(query)

@@ -132,6 +132,23 @@ class Consumer:
                         self.ssh_handler.disconnect()
                         print("Почта для пользователя {0} на АРМ {1} очищена".format(username, ipaddress))
 
+    def check_connection(self):
+        self.db_reader = DBReader(self.db)
+        self.db_reader.connect_sql_db()
+        user_id = self.db_reader.get_uids()[0]
+        ssh_credentials = self.db_reader.get_ssh_credentials(user_id)[0]
+        # ToDo подставить выбранные АРМ, а не все из БД и не захардкоженные
+        # arm_ids = self.db_reader.get_host_ids()
+        arm_ids = [1, 2]
+        for id in arm_ids:
+            ipaddress = self.db_reader.get_ipaddress(id)
+            self.ssh_handler.connect(host=ipaddress, username=ssh_credentials[1], password=ssh_credentials[2])
+            self.ssh_handler.disconnect()
+            if self.ssh_handler.exit_code == 3:
+
+                return False
+        return True
+
     def consume(self, requests, stat, safeprint, producing_finished=False):
         self.db_reader = DBReader(self.db)
         i = 0
